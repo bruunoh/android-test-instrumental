@@ -17,12 +17,38 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", "\"https://api.github.com/\""
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "BASE_URL", "\"https://api.github.com/\""
         }
     }
+
+    testOptions {
+        execution 'ANDROID_TEST_ORCHESTRATOR'
+    }
+
+    androidExtensions {
+        experimental true
+    }
 }
+
+final retrofitVersion = '2.3.0'
+final supportVersion = '27.0.2'
+final constraintVersion = '1.0.2'
+final archComponentsVersion = '1.1.0'
+final glideVersion = '4.5.0'
+final okHttpVersion = '3.9.1'
+
+final junitVersion = '4.12'
+final espressoVersion = '3.0.1'
+final mockitoVersion = '2.13.0'
+final testRunnerVersion = '1.0.1'
+final requestMatcherVersion = '2.2.0'
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -30,8 +56,34 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    // Lifecycle
+    implementation "android.arch.lifecycle:extensions:$archComponentsVersion"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+
+    // RX
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+    implementation "io.reactivex.rxjava2:rxjava:2.1.8"
+    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // Mockito
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "android.arch.core:core-testing:$archComponentsVersion"
+
+    androidTestImplementation "com.android.support.test:runner:$testRunnerVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "br.com.concretesolutions:requestmatcher:$requestMatcherVersion"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$okHttpVersion"
+
+    androidTestUtil "com.android.support.test:orchestrator:$testRunnerVersion"
 }
